@@ -16,3 +16,6 @@ venv/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Personal instructor-mode working notes (not a project deliverable)
+copilot_instructions.md
