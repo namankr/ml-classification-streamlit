@@ -25,7 +25,7 @@ Correctly flagging **Suspect** and **Pathological** cases (even though they are 
 
 ## c. GitHub Repository Link
 
-> `<TO BE FILLED IN AFTER YOU CREATE THE GITHUB REPO>`
+> `https://github.com/namankr/ml-classification-streamlit`
 
 ## d. Models Used
 
@@ -80,4 +80,4 @@ streamlit run app.py
 
 ## Live App
 
-> `<TO BE FILLED IN AFTER DEPLOYING TO STREAMLIT COMMUNITY CLOUD>`
+> `https://ml-classification-app-sahvpwbaqdpd5cnmjyugtz.streamlit.app/`
