@@ -50,12 +50,12 @@ Correctly flagging **Suspect** and **Pathological** cases (even though they are 
 
 | ML Model Name | Observation about model performance |
 |---|---|
-| Logistic Regression | `<TODO>` |
-| Decision Tree | `<TODO>` |
-| KNN | `<TODO>` |
-| Naive Bayes | `<TODO>` |
-| Support Vector Machine | `<TODO>` |
-| **Overall, Winner for your dataset?** | `<TODO>` |
+| Logistic Regression | Strong all-rounder: Accuracy 0.885 and a very high AUC of 0.961, so it ranks Normal / Suspect / Pathological cases well across thresholds (the Decision Tree's AUC is only 0.800). Macro Recall (0.760) is clearly below Accuracy because the rare Suspect and Pathological classes are missed more often than the dominant Normal class, which mostly drives Accuracy. The learned weights are interpretable (e.g. high `ASTV` pushes towards Pathological, high `AC` towards Normal), but the correlated `Mean`/`Median`/`Mode` features (correlation 0.89-0.95) split credit between them, so their individual weights should be read as one group, not one by one. |
+| Decision Tree | Best on Accuracy (0.897), Precision (0.829), Recall (0.785), F1 (0.803) and MCC (0.706), and its higher macro Recall shows it handles the minority classes better than the other models. Its AUC is the lowest (0.800), most likely because a tree outputs coarse probabilities (class fractions in a few leaves), which gives the ROC curve few distinct thresholds to work with. It is unaffected by correlated features and does not need scaling, since it simply splits on thresholds. |
+| KNN | Accuracy 0.871 and AUC 0.939 are decent, but Recall (0.699) and MCC (0.619) are weak. With imbalanced classes, the k nearest neighbours of a minority-class case are often mostly Normal, so the majority vote pushes it to Normal. It depends on distances, so the StandardScaler step in the pipeline matters. |
+| Naive Bayes | Weakest model on every metric (Accuracy 0.810, Precision 0.650, F1 0.657, MCC 0.574). Naive Bayes assumes features are independent given the class, but `Mean`, `Median` and `Mode` are highly correlated and carry almost the same signal, so their evidence is effectively counted several times and the probabilities are distorted. The low Precision means many cases are wrongly predicted as Suspect or Pathological. |
+| Support Vector Machine | Best AUC (0.965) and close to the top on everything else (Accuracy 0.894, F1 0.783, MCC 0.697), so it ranks cases very well. Its margin-based decision boundary copes well with the 21 scaled features. Its Recall (0.753) is slightly below the Decision Tree's. |
+| **Overall, Winner for your dataset?** | There is no single clear winner. Decision Tree, SVM and Logistic Regression are within about 1 percentage point of each other on Accuracy (0.897 / 0.894 / 0.885) and are close on Recall, F1 and MCC. The test set has few minority cases (about 59 Suspect and 35 Pathological), so these gaps are within what a different split could change. Decision Tree has a slight edge on Recall (0.785) and MCC (0.706), which matter most here because missing an at-risk case is the costly error, while SVM has the best AUC (0.965), so I would pick Decision Tree if catching minority cases is the priority and SVM if ranking quality across thresholds matters more. Naive Bayes is clearly the weakest because its independence assumption is violated by the correlated Mean/Median/Mode features, and KNN is weaker on Recall because the majority class dominates its neighbour votes. |
 
 ## Project Structure
 
